@@ -122,6 +122,8 @@ We welcome contributions! Check out [CONTRIBUTING.md](CONTRIBUTING.md) to unders
 - Running checks locally via the validator CLI.
 - Submitting Pull Requests.
 
+Maintainer notes for the OpenAI Codex for OSS application are in [docs/codex-for-oss.md](docs/codex-for-oss.md).
+
 ---
 
 ## 🗺️ Roadmap
