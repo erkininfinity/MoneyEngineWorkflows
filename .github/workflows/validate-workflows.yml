@@ -8,12 +8,22 @@ on:
     paths:
       - 'workflows/**'
       - 'packages/cli/**'
+      - 'prompts/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'eslint.config.js'
+      - '.github/workflows/validate-workflows.yml'
   pull_request:
     branches:
       - main
     paths:
       - 'workflows/**'
       - 'packages/cli/**'
+      - 'prompts/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'eslint.config.js'
+      - '.github/workflows/validate-workflows.yml'
 
 jobs:
   validate:
@@ -31,13 +41,19 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Lint source
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
 
       - name: Build CLI
-        run: npx tsc -p packages/cli
+        run: npm run build
 
       - name: Run workflow validator
-        run: node packages/cli/dist/index.js validate workflows
+        run: npm run validate
 
       - name: List all workflows
-        run: node packages/cli/dist/index.js list workflows
+        run: npm run list

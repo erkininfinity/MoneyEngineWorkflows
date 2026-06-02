@@ -18,8 +18,8 @@ Before starting, you will need:
 ## Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/erkininfinity/money-engine-workflows.git
-cd money-engine-workflows
+git clone https://github.com/erkininfinity/MoneyEngineWorkflows.git
+cd MoneyEngineWorkflows
 ```
 
 ## Step 2: Install the CLI

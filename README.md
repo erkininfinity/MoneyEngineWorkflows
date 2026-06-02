@@ -4,7 +4,7 @@
 
 ---
 
-[![Validate Workflows CI](https://github.com/erkininfinity/money-engine-workflows/actions/workflows/validate-workflows.yml/badge.svg)](https://github.com/erkininfinity/money-engine-workflows/actions/workflows/validate-workflows.yml)
+[![Validate Workflows CI](https://github.com/erkininfinity/MoneyEngineWorkflows/actions/workflows/validate-workflows.yml/badge.svg)](https://github.com/erkininfinity/MoneyEngineWorkflows/actions/workflows/validate-workflows.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **Money Engine Workflows** is an open-source collection of AI-powered revenue automation workflows, templates, blueprints, prompts, and validator tooling. It is specifically designed for startups, founders, small B2B/B2C businesses, and agencies to transition from sales chaos to predictable, systemized revenue-generating actions.
@@ -53,7 +53,7 @@ money-engine-workflows/
 
 ### 1. Requirements
 
-- Node.js (v18 or higher)
+- Node.js (v20.19 or higher)
 - n8n (self-hosted or cloud version)
 - API Credentials (e.g., OpenAI or any OpenAI-compatible LLM provider, Telegram Bot Token, Google Sheets API)
 
@@ -62,8 +62,8 @@ money-engine-workflows/
 Clone this repository and bootstrap dependencies:
 
 ```bash
-git clone https://github.com/erkininfinity/money-engine-workflows.git
-cd money-engine-workflows
+git clone https://github.com/erkininfinity/MoneyEngineWorkflows.git
+cd MoneyEngineWorkflows
 npm install
 npm run build
 ```
