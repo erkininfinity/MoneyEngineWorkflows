@@ -31,3 +31,6 @@ out/
 # OS files
 Thumbs.db
 .DS_Store
+
+# Local planning notes
+money_engine_workflows_full_plan.md
