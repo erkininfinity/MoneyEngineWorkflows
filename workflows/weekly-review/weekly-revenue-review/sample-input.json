@@ -1,0 +1,16 @@
+{
+  "week": "2026-05-26 to 2026-06-01",
+  "revenue_collected": "820000 KZT",
+  "deals_closed_won": 2,
+  "deals_closed_lost": 3,
+  "new_leads": 7,
+  "outreach_sent": 34,
+  "outreach_replies": 6,
+  "channels": {
+    "linkedin": {"leads": 3, "closed": 0},
+    "telegram": {"leads": 2, "closed": 1},
+    "referral": {"leads": 2, "closed": 1}
+  },
+  "unpaid_invoices": "500000 KZT",
+  "expenses_on_acquisition": "45000 KZT"
+}

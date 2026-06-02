@@ -1,0 +1,29 @@
+[
+  {
+    "deal_id": "D-010",
+    "client": "Delta Systems",
+    "amount": "350000 KZT",
+    "stage": "lost",
+    "loss_reason": "Too expensive compared to competitor",
+    "source": "LinkedIn outreach",
+    "last_contact_date": "2026-05-10"
+  },
+  {
+    "deal_id": "D-011",
+    "client": "Epsilon Hub",
+    "amount": "180000 KZT",
+    "stage": "lost",
+    "loss_reason": "No urgency, decided to do it themselves",
+    "source": "Referral",
+    "last_contact_date": "2026-05-18"
+  },
+  {
+    "deal_id": "D-012",
+    "client": "Zeta Solutions",
+    "amount": "600000 KZT",
+    "stage": "lost",
+    "loss_reason": "Went with a larger agency",
+    "source": "Cold outreach",
+    "last_contact_date": "2026-04-30"
+  }
+]

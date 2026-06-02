@@ -1,0 +1,20 @@
+id: lost-deal-analyzer
+name: Lost Deal Analyzer
+category: sales-follow-up
+version: 0.1.0
+status: stable
+platforms:
+  - n8n
+required_integrations:
+  - Google Sheets
+  - OpenAI-compatible LLM
+  - Telegram
+inputs:
+  - deals.csv
+outputs:
+  - lost_deal_analysis_report
+  - telegram_summary
+risk_level: low
+human_approval_required: false
+description: >
+  Processes closed-lost deals to surface recurring objection patterns, pricing mismatches, and offer weaknesses — then recommends specific changes to improve conversion rates.

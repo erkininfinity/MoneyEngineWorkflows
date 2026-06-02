@@ -1,0 +1,116 @@
+{
+  "name": "AI Offer Builder",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e0a12e3e-4340-410a-ba92-a178fbcdde92",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "capabilities",
+              "value": "Node.js coding, API integrations, Web scraping, Telegram bot building"
+            },
+            {
+              "name": "target_audience",
+              "value": "Real Estate Agents"
+            },
+            {
+              "name": "customer_pain",
+              "value": "Slow response to hot WhatsApp/Telegram leads, losing deals to faster agents"
+            },
+            {
+              "name": "target_price",
+              "value": "150000 KZT"
+            }
+          ]
+        }
+      },
+      "id": "89fa3c44-b0e2-411a-ab52-cd8904712bc9",
+      "name": "Set Input Params",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "prompt": "=Build a high-ticket B2B service offer with the following inputs:\n- Capabilities: {{$json.capabilities}}\n- Target Audience: {{$json.target_audience}}\n- Main Pain Point: {{$json.customer_pain}}\n- Price Point: {{$json.target_price}}\n\nFormat the response as Markdown with these sections:\n1. Offering Title & Value Proposition (The One-Sentence Hook)\n2. Tiers (Standard Implementation vs Premium Retainer)\n3. Reversing Risk (Guarantee / Risk Mitigation Strategy)\n4. Landing Page / Social Post Pitch copy\n5. Short Outreach Pitch (150 chars max for Telegram/DM)",
+        "options": {}
+      },
+      "id": "8fdfd422-e1d9-482a-a9fa-a9f81a7d6e7b",
+      "name": "OpenAI Chat Model",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [520, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "=💼 *AI Offer Generated!*\n\n*Target Audience*: {{$node[\"Set Input Params\"].json.target_audience}}\n\n*Pitch Draft*:\n{{$json.message.content.slice(0, 1000)}}...",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "adca84f1-f09c-4eb2-a9fb-baef2c9d1a3c",
+      "name": "Telegram Notification",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [750, 300],
+      "credentials": {
+        "telegramApi": {
+          "id": "telegram-credential-placeholder"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Set Input Params",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Input Params": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Chat Model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "main": [
+        [
+          {
+            "node": "Telegram Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "pinData": {}
+}

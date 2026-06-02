@@ -1,0 +1,19 @@
+id: first-revenue-sprint
+name: First Revenue Sprint
+category: first-revenue
+version: 0.1.0
+status: stable
+platforms:
+  - n8n
+required_integrations:
+  - OpenAI-compatible LLM
+  - Telegram
+inputs:
+  - revenue-sprint-input.json
+outputs:
+  - first-revenue-plan.md
+  - telegram_notification
+risk_level: low
+human_approval_required: false
+description: >
+  Scaffolds a detailed 7-day action sprint to help founders and solo-operators earn their first income using their existing skills, channels, and time constraints.

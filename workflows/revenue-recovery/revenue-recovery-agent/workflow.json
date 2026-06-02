@@ -1,0 +1,168 @@
+{
+  "name": "Revenue Recovery Agent",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e9bfa11c-2234-410a-bfa2-a228fbcedde2",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{$env.GOOGLE_SHEET_ID}}",
+          "mode": "id"
+        },
+        "sheetName": "Invoices",
+        "options": {}
+      },
+      "id": "89fa3b44-b0e2-411a-ab52-cd8904712bc9",
+      "name": "Read Invoices Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [300, 200],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{$env.GOOGLE_SHEET_ID}}",
+          "mode": "id"
+        },
+        "sheetName": "Deals",
+        "options": {}
+      },
+      "id": "89fa3b44-b0e2-411a-ab52-cd8904712bca",
+      "name": "Read Deals Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [300, 350],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "merge",
+        "mergeBy": "json",
+        "options": {}
+      },
+      "id": "3d50df52-1678-4ea7-90ff-4e78e11a37c8",
+      "name": "Merge Records",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [520, 280]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "prompt": "=Analyze the active business transaction records and compile a Revenue Recovery Report.\n\nTransactions:\n{{$json.all}}\n\nTasks:\n1. Locate overdue invoices (status 'overdue') and calculate total amount lost.\n2. Locate stalled deals (stage 'proposal_sent' or 'stalled' with no updates for 5+ days).\n3. For each case, generate a prioritized action checklist and draft a non-invasive follow-up/reminder message.",
+        "options": {}
+      },
+      "id": "8fdfd422-e1d9-482a-a9fa-a9f81a7d6e7b",
+      "name": "Find Recovery Opportunities",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [700, 280],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "=💵 *Revenue Recovery Report Summary*\n\n{{$json.message.content.slice(0, 1000)}}...",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "adca84f1-f09c-4eb2-a9fb-baef2c9d1a3c",
+      "name": "Telegram Recovery Summary",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [920, 280],
+      "credentials": {
+        "telegramApi": {
+          "id": "telegram-credential-placeholder"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Read Invoices Sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read Deals Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Invoices Sheet": {
+      "main": [
+        [
+          {
+            "node": "Merge Records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Deals Sheet": {
+      "main": [
+        [
+          {
+            "node": "Merge Records",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Records": {
+      "main": [
+        [
+          {
+            "node": "Find Recovery Opportunities",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Recovery Opportunities": {
+      "main": [
+        [
+          {
+            "node": "Telegram Recovery Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "pinData": {}
+}

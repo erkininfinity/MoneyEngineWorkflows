@@ -1,0 +1,84 @@
+{
+  "name": "Upsell Finder",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e0dfa11c-2234-410a-bfa2-a228fbcedde2",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{$env.GOOGLE_SHEET_ID}}",
+          "mode": "id"
+        },
+        "sheetName": "Clients",
+        "options": {}
+      },
+      "id": "89fa3b44-b0e2-411a-ab52-cd8904712bc9",
+      "name": "Read Clients Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [300, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "prompt": "=Analyze this client database and identify upsell and cross-sell opportunities:\n\nClient Data:\n{{$json}}\n\nProduct/Service Catalog: {{$env.PRODUCT_CATALOG}}\n\nFor each client, evaluate:\n1. Days since last purchase\n2. Total spend (lifetime value)\n3. Notes and interests mentioned\n4. Which upsell/upgrade is the most logical next step\n\nOutput a prioritized list of opportunities with:\n- Client Name\n- Recommended Upsell/Cross-sell product\n- Estimated upsell revenue potential\n- Priority (High/Medium/Low)\n- A short, warm outreach message draft",
+        "options": {}
+      },
+      "id": "8fdfd422-e1d9-482a-a9fa-a9f81a7d6e7b",
+      "name": "Find Upsell Opportunities",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [520, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "=📈 *Upsell Opportunities Report*\n\n{{$json.message.content.slice(0, 1000)}}...\n\n_Review the full report and send approved messages manually._",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "adca84f1-f09c-4eb2-a9fb-baef2c9d1a3c",
+      "name": "Telegram Upsell Summary",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [750, 300],
+      "credentials": {
+        "telegramApi": {
+          "id": "telegram-credential-placeholder"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [[{"node": "Read Clients Sheet", "type": "main", "index": 0}]]
+    },
+    "Read Clients Sheet": {
+      "main": [[{"node": "Find Upsell Opportunities", "type": "main", "index": 0}]]
+    },
+    "Find Upsell Opportunities": {
+      "main": [[{"node": "Telegram Upsell Summary", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "pinData": {}
+}

@@ -1,0 +1,22 @@
+{
+  "name": "money-engine-workflows-root",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Root of Money Engine Workflows OSS Project",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "bootstrap": "npm install",
+    "build": "npm run build --workspaces --if-present",
+    "cli": "node packages/cli/dist/index.js",
+    "validate": "node packages/cli/dist/index.js validate workflows",
+    "list": "node packages/cli/dist/index.js list",
+    "docs": "node packages/cli/dist/index.js docs",
+    "lint": "eslint .",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

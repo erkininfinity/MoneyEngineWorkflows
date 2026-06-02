@@ -1,0 +1,23 @@
+[
+  {
+    "client_id": "1",
+    "name": "Alpha Studio",
+    "last_purchase_date": "2026-03-12",
+    "total_spent": "450000 KZT",
+    "notes": "Interested in automation support. Asked about monthly retainer."
+  },
+  {
+    "client_id": "2",
+    "name": "Beta Clinic",
+    "last_purchase_date": "2026-01-25",
+    "total_spent": "1200000 KZT",
+    "notes": "Bought CRM setup. Mentioned they want to automate patient reminders."
+  },
+  {
+    "client_id": "3",
+    "name": "Gamma School",
+    "last_purchase_date": "2025-12-05",
+    "total_spent": "300000 KZT",
+    "notes": "No follow-up after initial proposal. Had interest in teacher scheduling automation."
+  }
+]

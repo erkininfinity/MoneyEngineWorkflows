@@ -1,0 +1,7 @@
+deal_id,client_id,amount,stage,last_contact_date,next_step,loss_reason,source
+D-001,1,600000,proposal_sent,2026-05-22,follow up,,LinkedIn outreach
+D-002,2,900000,negotiation,2026-05-29,send case study,,Referral
+D-003,3,250000,stalled,2026-05-12,call client,,Cold outreach
+D-004,4,400000,won,2026-05-30,invoice sent,,Telegram community
+D-005,5,180000,lost,2026-05-18,,No urgency decided to do themselves,Referral
+D-006,1,350000,lost,2026-05-10,,Too expensive compared to competitor,LinkedIn outreach

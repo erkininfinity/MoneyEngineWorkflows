@@ -1,0 +1,22 @@
+id: weekly-revenue-review
+name: Weekly Revenue Review
+category: weekly-review
+version: 0.1.0
+status: stable
+platforms:
+  - n8n
+required_integrations:
+  - Google Sheets
+  - OpenAI-compatible LLM
+  - Telegram
+inputs:
+  - deals.csv
+  - invoices.csv
+outputs:
+  - weekly_review_report
+  - telegram_digest
+  - next_sprint_plan
+risk_level: low
+human_approval_required: false
+description: >
+  Aggregates weekly business data across deals, invoices, lead sources, and outreach activity to produce a concise revenue review, conversion analysis, and a prioritised action sprint for the next 7 days.

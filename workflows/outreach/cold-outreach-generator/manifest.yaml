@@ -1,0 +1,19 @@
+id: cold-outreach-generator
+name: Cold Outreach Generator
+category: outreach
+version: 0.1.0
+status: stable
+platforms:
+  - n8n
+required_integrations:
+  - Google Sheets
+  - OpenAI-compatible LLM
+inputs:
+  - prospects.csv
+outputs:
+  - outreach-drafts.csv
+  - review_notifications
+risk_level: medium
+human_approval_required: true
+description: >
+  Reads a list of sales prospects, research data, and business fields to draft personalized outreach and follow-up templates ready for human approval.

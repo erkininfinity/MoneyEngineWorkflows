@@ -1,0 +1,11 @@
+{
+  "data": {
+    "date": "2026-06-02",
+    "unpaid_invoices_count": 2,
+    "unpaid_invoices_sum": "500000 KZT",
+    "stalled_deals_count": 1,
+    "stalled_deals_sum": "600000 KZT",
+    "new_leads_yesterday": 3,
+    "inbox_unread_inquiries": 1
+  }
+}

@@ -1,0 +1,19 @@
+id: founder-daily-revenue-brief
+name: Founder Daily Revenue Brief
+category: founder-briefs
+version: 0.1.0
+status: stable
+platforms:
+  - n8n
+required_integrations:
+  - Google Sheets
+  - OpenAI-compatible LLM
+  - Telegram
+inputs:
+  - daily-transactions-state.json
+outputs:
+  - telegram_daily_brief
+risk_level: low
+human_approval_required: false
+description: >
+  Triggered every morning to compile sales, invoices, and client status updates into 3 high-leverage revenue actions sent directly to the founder on Telegram.

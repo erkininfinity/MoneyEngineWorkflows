@@ -1,0 +1,117 @@
+{
+  "name": "Founder Daily Revenue Brief",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "e0bfa11c-2234-410a-bfa2-a228fbcedde2",
+      "name": "Schedule Trigger (9AM Daily)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{$env.GOOGLE_SHEET_ID}}",
+          "mode": "id"
+        },
+        "sheetName": "MetricsSummary",
+        "options": {}
+      },
+      "id": "89fa3b44-b0e2-411a-ab52-cd8904712bc9",
+      "name": "Read Revenue Metrics",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [300, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "prompt": "=Using the daily business status: {{$json.data}} \n\nCreate a brief, high-energy Telegram brief for the business owner.\n\nStructure:\n1. 💵 Estimated Daily Cash Flow Target\n2. ⚡ Top 3 Critical Revenue Actions for Today (who to call/email/follow up, and expected outcomes)\n3. ⚠️ Critical Risks (outstanding invoices, stalled deals)\n\nKeep it short and formatted in bold markdown for Telegram reading.",
+        "options": {}
+      },
+      "id": "8fdfd422-e1d9-482a-a9fa-a9f81a7d6e7b",
+      "name": "Draft Daily Revenue Brief",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [520, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "={{$json.message.content}}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "adca84f1-f09c-4eb2-a9fb-baef2c9d1a3c",
+      "name": "Send Telegram Brief",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [750, 300],
+      "credentials": {
+        "telegramApi": {
+          "id": "telegram-credential-placeholder"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger (9AM Daily)": {
+      "main": [
+        [
+          {
+            "node": "Read Revenue Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Revenue Metrics": {
+      "main": [
+        [
+          {
+            "node": "Draft Daily Revenue Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft Daily Revenue Brief": {
+      "main": [
+        [
+          {
+            "node": "Send Telegram Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "pinData": {}
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "invoice_id": "INV-001",
+    "client_name": "Alpha Studio",
+    "amount": "320000 KZT",
+    "due_date": "2026-05-20",
+    "status": "overdue",
+    "tone": "Friendly/Professional"
+  },
+  {
+    "invoice_id": "INV-003",
+    "client_name": "Gamma School",
+    "amount": "180000 KZT",
+    "due_date": "2026-05-15",
+    "status": "overdue",
+    "tone": "Formal"
+  }
+]

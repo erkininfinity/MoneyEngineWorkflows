@@ -1,0 +1,19 @@
+id: ai-offer-builder
+name: AI Offer Builder
+category: offer-building
+version: 0.1.0
+status: stable
+platforms:
+  - n8n
+required_integrations:
+  - OpenAI-compatible LLM
+  - Telegram
+inputs:
+  - offer-builder-input.json
+outputs:
+  - structured-offer.md
+  - telegram_notification
+risk_level: low
+human_approval_required: false
+description: >
+  Packages raw skills and market needs into a premium service offering with tiered pricing, guarantees, and conversion copywriting drafts.

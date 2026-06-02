@@ -1,0 +1,43 @@
+name: Validate Workflows
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'workflows/**'
+      - 'packages/cli/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'workflows/**'
+      - 'packages/cli/**'
+
+jobs:
+  validate:
+    name: Validate Workflow Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build CLI
+        run: npx tsc -p packages/cli
+
+      - name: Run workflow validator
+        run: node packages/cli/dist/index.js validate workflows
+
+      - name: List all workflows
+        run: node packages/cli/dist/index.js list workflows

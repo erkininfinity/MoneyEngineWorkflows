@@ -1,0 +1,6 @@
+invoice_id,client_id,amount,due_date,status,tone
+INV-001,1,320000,2026-05-20,overdue,Friendly/Professional
+INV-002,2,500000,2026-06-10,pending,Friendly
+INV-003,3,180000,2026-05-15,overdue,Formal
+INV-004,4,250000,2026-06-01,paid,n/a
+INV-005,5,90000,2026-05-28,overdue,Casual

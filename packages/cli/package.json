@@ -1,0 +1,24 @@
+{
+  "name": "@money-engine/cli",
+  "version": "0.1.0",
+  "description": "CLI validator, list, docs, and generator tool for Money Engine Workflows",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "money-engine": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^11.1.0",
+    "picocolors": "^1.0.0",
+    "yaml": "^2.3.4",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}

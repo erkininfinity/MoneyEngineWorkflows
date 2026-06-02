@@ -1,0 +1,15 @@
+{
+  "name": "Erkin",
+  "business_stage": "Early-stage solo founder",
+  "industry": "B2B AI Automation",
+  "monthly_revenue_goal": "500000 KZT",
+  "current_monthly_revenue": "150000 KZT",
+  "services": [
+    "n8n workflow automation setup",
+    "Telegram bot development",
+    "API integrations for SMBs"
+  ],
+  "target_clients": "Small B2B agencies, clinics, schools, real estate agents",
+  "preferred_channels": ["Telegram", "LinkedIn", "Referrals"],
+  "weekly_available_hours": 28
+}

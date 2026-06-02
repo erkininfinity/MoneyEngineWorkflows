@@ -1,0 +1,81 @@
+{
+  "name": "Hot Lead Detector",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "inbound-lead",
+        "options": {}
+      },
+      "id": "e8a12e3e-4340-410a-ba92-a178fbcdde92",
+      "name": "Webhook Inbound Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "prompt": "=Analyze this inbound lead message:\nSender: {{$json.body.sender_name}}\nEmail: {{$json.body.sender_email}}\nMessage: {{$json.body.message_text}}\n\nPerform lead scoring and extract details in a JSON output:\n1. lead_score (0 to 100 based on purchase intent, urgency, and budget indicators)\n2. purchase_intent (High, Medium, Low)\n3. budget_estimate (Estimated price/capacity if mentioned, or 'Unknown') \n4. urgency (Immediate, Medium, Low)\n5. suggested_response_action (Specific action plan for the sales person)\n6. reply_draft (Write a high-converting reply draft ready to send)",
+        "options": {
+          "responseFormat": "json"
+        }
+      },
+      "id": "8fdfd422-e1d9-492a-a9fa-a9f81a7d6e7b",
+      "name": "Analyze Inbound Message",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [350, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "=🔥 *Hot Lead Detected! (Score: {{$json.lead_score}}/100)*\n\n*From*: {{$node[\"Webhook Inbound Lead\"].json.body.sender_name}} ({{$node[\"Webhook Inbound Lead\"].json.body.sender_email}})\n*Intent*: {{$json.purchase_intent}}\n*Urgency*: {{$json.urgency}}\n\n*Suggested Action*:\n{{$json.suggested_response_action}}\n\n*Draft Reply*:\n`{{$json.reply_draft}}`",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "adca84f1-f09c-4eb2-a9fb-baef2c9d1a3c",
+      "name": "Notify Founder",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [600, 300],
+      "credentials": {
+        "telegramApi": {
+          "id": "telegram-credential-placeholder"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Inbound Lead": {
+      "main": [
+        [
+          {
+            "node": "Analyze Inbound Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Inbound Message": {
+      "main": [
+        [
+          {
+            "node": "Notify Founder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "pinData": {}
+}

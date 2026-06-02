@@ -1,0 +1,19 @@
+id: hot-lead-detector
+name: Hot Lead Detector
+category: acquisition
+version: 0.1.0
+status: stable
+platforms:
+  - n8n
+required_integrations:
+  - OpenAI-compatible LLM
+  - Telegram
+inputs:
+  - inbound-lead-message.json
+outputs:
+  - lead_scoring_report
+  - telegram_alert
+risk_level: low
+human_approval_required: false
+description: >
+  Processes incoming messages and inquiries to detect customer purchase intent, calculate lead scores, estimate budget capacity, and outline immediate response actions.

@@ -1,0 +1,116 @@
+{
+  "name": "First Revenue Sprint",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1d8b9d90-3b4e-4f7f-a64d-3db6300438cf",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "skills",
+              "value": "Web Development, Basic AI Auditing, Automation Setup"
+            },
+            {
+              "name": "channels",
+              "value": "Telegram community, Warm B2B contacts, LinkedIn"
+            },
+            {
+              "name": "target_income",
+              "value": "100000 KZT"
+            },
+            {
+              "name": "hours_per_day",
+              "value": "4"
+            }
+          ]
+        }
+      },
+      "id": "bfa29344-938a-4d7a-ba92-ea9b43171cd8",
+      "name": "Set Input Params",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "prompt": "=Create a highly actionable, 7-day sprint plan based on the following input parameters:\n- Skills: {{$json.skills}}\n- Channels: {{$json.channels}}\n- Target Income: {{$json.target_income}}\n- Available Hours/Day: {{$json.hours_per_day}}\n\nStructure the output with:\n1. Recommended Revenue Stream/Service Offer\n2. Target Client Profile\n3. Daily Action Checklist (Day 1 to 7)\n4. Highly targeted, non-pushy B2B outreach scripts for Telegram and LinkedIn.\n\nKeep it practical, focused on manual high-convert sales actions.",
+        "options": {}
+      },
+      "id": "e229ba39-86f3-4d72-b883-fa3d9bb57c3d",
+      "name": "OpenAI Chat Model",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [520, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "=🚀 *First Revenue Sprint Generated!*\n\n*Target Goal*: {{$node[\"Set Input Params\"].json.target_income}}\n\n*Action Summary*:\n{{$json.message.content.slice(0, 1000)}}...",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "dcf34b41-e8d9-482a-a9fa-0adbc55627a8",
+      "name": "Telegram Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [750, 300],
+      "credentials": {
+        "telegramApi": {
+          "id": "telegram-credential-placeholder"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Set Input Params",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Input Params": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Chat Model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "main": [
+        [
+          {
+            "node": "Telegram Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "pinData": {}
+}

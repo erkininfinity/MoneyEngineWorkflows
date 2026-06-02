@@ -1,0 +1,114 @@
+{
+  "name": "Cold Outreach Generator",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e5bfa11c-2234-410a-bfa2-a228fbcedde2",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{$env.GOOGLE_SHEET_ID}}",
+          "mode": "id"
+        },
+        "sheetName": "Prospects",
+        "options": {}
+      },
+      "id": "89fa3b44-b0e2-411a-ab52-cd8904712bc9",
+      "name": "Read Prospects Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [300, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "prompt": "=Write a short, highly personalized cold message for this prospect:\n- Name: {{$json.name}}\n- Company: {{$json.company}}\n- Niche: {{$json.niche}}\n- Recent Update: {{$json.recent_post_or_news}}\n- Our Offer: {{$env.MY_OFFER_SUMMARY}}\n\nGuidelines:\n1. Keep it under 2-3 sentences.\n2. Reference their recent update naturally.\n3. Make the call to action low friction (e.g. asking for a 3-minute read or simple reply).\n4. Do not sound generic or formal.",
+        "options": {}
+      },
+      "id": "8fdfd422-e1d9-482a-a9fa-a9f81a7d6e7b",
+      "name": "Personalize Message",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [520, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "={{$env.GOOGLE_SHEET_ID}}",
+          "mode": "id"
+        },
+        "sheetName": "Prospects",
+        "rowId": "={{$node[\"Read Prospects Sheet\"].json.row_number}}",
+        "fields": {
+          "draft_message": "={{$json.message.content}}"
+        }
+      },
+      "id": "adca84f1-f09c-4eb2-a9fb-baef2c9d1a3c",
+      "name": "Write Draft back to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [750, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-credential-placeholder"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Read Prospects Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Prospects Sheet": {
+      "main": [
+        [
+          {
+            "node": "Personalize Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personalize Message": {
+      "main": [
+        [
+          {
+            "node": "Write Draft back to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "pinData": {}
+}

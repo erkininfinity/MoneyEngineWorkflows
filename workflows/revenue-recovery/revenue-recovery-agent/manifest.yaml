@@ -1,0 +1,23 @@
+id: revenue-recovery-agent
+name: Revenue Recovery Agent
+category: revenue-recovery
+version: 0.1.0
+status: stable
+platforms:
+  - n8n
+required_integrations:
+  - Google Sheets
+  - OpenAI-compatible LLM
+  - Telegram
+inputs:
+  - clients.csv
+  - deals.csv
+  - invoices.csv
+outputs:
+  - revenue_recovery_report
+  - telegram_summary
+  - follow_up_messages
+risk_level: medium
+human_approval_required: true
+description: >
+  Finds overdue invoices, stalled deals, missed follow-ups, and upsell opportunities, compiling them into a single prioritised recovery report with messaging drafts.

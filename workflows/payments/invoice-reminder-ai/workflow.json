@@ -1,0 +1,136 @@
+{
+  "name": "Invoice Reminder AI",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e0cfa11c-2234-410a-bfa2-a228fbcedde2",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "={{$env.GOOGLE_SHEET_ID}}",
+          "mode": "id"
+        },
+        "sheetName": "Invoices",
+        "options": {}
+      },
+      "id": "89fa3b44-b0e2-411a-ab52-cd8904712bc9",
+      "name": "Read Unpaid Invoices",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [300, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.status}}",
+              "value2": "overdue"
+            }
+          ]
+        }
+      },
+      "id": "3d50df52-1678-4ea7-90ff-4e78e11a37c7",
+      "name": "Filter Overdue",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "prompt": "=Write an email/Telegram payment reminder for this client:\n- Client: {{$json.client_name}}\n- Invoice: {{$json.invoice_id}}\n- Amount: {{$json.amount}}\n- Due Date: {{$json.due_date}}\n- Relationship Tone: {{$json.tone || 'Friendly/Professional'}}\n\nRule:\n- Overdue 1-5 days: Friendly check-in. Mentioning invoice copy. (Soft)\n- Overdue 6-12 days: Professional request. Specify due date has passed. (Moderate)\n- Overdue 13+ days: Direct, assertive request. Ask for concrete processing date. (Strict)\n\nIdentify the overdue status automatically. Only output the message text.",
+        "options": {}
+      },
+      "id": "8fdfd422-e1d9-482a-a9fa-a9f81a7d6e7b",
+      "name": "Draft Reminder Tone",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [720, 200],
+      "credentials": {
+        "openAiApi": {
+          "id": "openai-credential-placeholder"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$env.TELEGRAM_CHAT_ID}}",
+        "text": "=🧾 *Invoice Reminder Generated*\n\n*Client*: {{$node[\"Filter Overdue\"].json.client_name}}\n*Invoice ID*: {{$node[\"Filter Overdue\"].json.invoice_id}}\n*Amount*: {{$node[\"Filter Overdue\"].json.amount}}\n\n*Suggested Message Draft*:\n`{{$json.message.content}}`",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "adca84f1-f09c-4eb2-a9fb-baef2c9d1a3c",
+      "name": "Telegram Draft Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [950, 200],
+      "credentials": {
+        "telegramApi": {
+          "id": "telegram-credential-placeholder"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Read Unpaid Invoices",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Unpaid Invoices": {
+      "main": [
+        [
+          {
+            "node": "Filter Overdue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Overdue": {
+      "main": [
+        [
+          {
+            "node": "Draft Reminder Tone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft Reminder Tone": {
+      "main": [
+        [
+          {
+            "node": "Telegram Draft Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "pinData": {}
+}

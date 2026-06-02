@@ -1,0 +1,20 @@
+id: upsell-finder
+name: Upsell Finder
+category: upsell
+version: 0.1.0
+status: stable
+platforms:
+  - n8n
+required_integrations:
+  - Google Sheets
+  - OpenAI-compatible LLM
+  - Telegram
+inputs:
+  - clients.csv
+outputs:
+  - upsell_opportunities_report
+  - telegram_summary
+risk_level: low
+human_approval_required: true
+description: >
+  Analyzes historical client purchase data to surface timely upsell and cross-sell opportunities, ranked by revenue potential, with personalized pitch drafts.
